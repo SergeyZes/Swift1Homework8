@@ -24,6 +24,7 @@ class GameScene: SKScene {
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
         self.physicsBody?.allowsRotation = false
         view.showsPhysics = true
+        self.physicsWorld.contactDelegate = self
         
         let counterClockwiseButton = SKShapeNode()
         counterClockwiseButton.path = UIBezierPath(ovalIn: CGRect(x: 0, y: 0, width: 45, height: 45)).cgPath
@@ -47,6 +48,9 @@ class GameScene: SKScene {
         
         snake = Snake(atPoint: CGPoint(x: view.scene!.frame.midX, y: view.scene!.frame.midY))
         self.addChild(snake!)
+        
+        self.physicsBody?.categoryBitMask = CollisionCategories.EdgeBody
+        self.physicsBody?.collisionBitMask = CollisionCategories.Snake | CollisionCategories.SnakeHead
    }
     
         
@@ -60,6 +64,13 @@ class GameScene: SKScene {
             }
             
             touchesNode.fillColor = .green
+            
+            if touchesNode.name == "counterClockwiseButton" {
+                snake!.moveCounterClockwise()
+            } else if touchesNode.name == "clockwiseButton" {
+                snake!.moveClockwise()
+            }
+            
             tchNode =  touchesNode
         }
  
@@ -89,7 +100,7 @@ class GameScene: SKScene {
     
     
     override func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
+        snake!.move()
     }
     
     func createApple() {
@@ -99,4 +110,28 @@ class GameScene: SKScene {
         let apple = Apple(position: CGPoint(x: randX, y: randY))
         self.addChild(apple)
     }
+}
+
+extension GameScene: SKPhysicsContactDelegate {
+    func didBegin(_ contact: SKPhysicsContact) {
+        let bodies = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
+        let collisionObject = bodies ^ CollisionCategories.SnakeHead
+        
+        switch collisionObject {
+        case CollisionCategories.Apple:
+            let apple = contact.bodyA.node is Apple ? contact.bodyA.node : contact.bodyB.node
+            snake?.addBodyPart()
+            apple?.removeFromParent()
+            createApple()
+        default:
+            break
+        }
+    }
+}
+
+struct CollisionCategories  {
+    static let Snake: UInt32 = 0x1 << 0
+    static let SnakeHead: UInt32 = 0x1 << 1
+    static let Apple: UInt32 = 0x1 << 2
+    static let EdgeBody: UInt32 = 0x1 << 3
 }
