@@ -23,7 +23,7 @@ class GameScene: SKScene {
         self.physicsWorld.gravity = CGVector(dx: 0, dy: 0)
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
         self.physicsBody?.allowsRotation = false
-        view.showsPhysics = true
+        //view.showsPhysics = true
         self.physicsWorld.contactDelegate = self
         
         let counterClockwiseButton = SKShapeNode()
@@ -46,9 +46,23 @@ class GameScene: SKScene {
 
         createApple()
         
+        print("\(counterClockwiseButton.position.x)  \(counterClockwiseButton.position.y)")
+        
         snake = Snake(atPoint: CGPoint(x: view.scene!.frame.midX, y: view.scene!.frame.midY))
         self.addChild(snake!)
         
+        let downEdge = Border(position: CGPoint(x: 0, y: 100), size: CGSize(width: view.scene!.frame.width, height: 5))
+        self.addChild(downEdge)
+        let topEdge = Border(position: CGPoint(x: 0, y: view.scene!.frame.maxY-40), size: CGSize(width: view.scene!.frame.width, height: 5))
+        self.addChild(topEdge)
+        
+        let leftEdge = Border(position: CGPoint(x: 0, y: 100), size: CGSize(width: 5, height: view.scene!.frame.maxY-140))
+        self.addChild(leftEdge)
+        
+        let rightEdge = Border(position: CGPoint(x: view.scene!.frame.width-5, y: 100), size: CGSize(width: 5, height: view.scene!.frame.maxY-140))
+        self.addChild(rightEdge)
+
+
         self.physicsBody?.categoryBitMask = CollisionCategories.EdgeBody
         self.physicsBody?.collisionBitMask = CollisionCategories.Snake | CollisionCategories.SnakeHead
    }
