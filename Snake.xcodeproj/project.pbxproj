@@ -17,6 +17,7 @@
 		A59AA60A239D711A00E7B2CA /* SnakeBodyPart.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59AA609239D711A00E7B2CA /* SnakeBodyPart.swift */; };
 		A59AA60C239D727200E7B2CA /* SnakeHead.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59AA60B239D727200E7B2CA /* SnakeHead.swift */; };
 		A59AA60E239D72E200E7B2CA /* Snake.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59AA60D239D72E200E7B2CA /* Snake.swift */; };
+		A5E4802623A013350092C939 /* Border.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E4802523A013350092C939 /* Border.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		A59AA609239D711A00E7B2CA /* SnakeBodyPart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnakeBodyPart.swift; sourceTree = "<group>"; };
 		A59AA60B239D727200E7B2CA /* SnakeHead.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnakeHead.swift; sourceTree = "<group>"; };
 		A59AA60D239D72E200E7B2CA /* Snake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Snake.swift; sourceTree = "<group>"; };
+		A5E4802523A013350092C939 /* Border.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Border.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +72,7 @@
 				A59AA60B239D727200E7B2CA /* SnakeHead.swift */,
 				A59AA60D239D72E200E7B2CA /* Snake.swift */,
 				A59AA607239D6E7300E7B2CA /* Apple.swift */,
+				A5E4802523A013350092C939 /* Border.swift */,
 				A597180E239BFCA600435084 /* GameViewController.swift */,
 				A5971810239BFCA600435084 /* Main.storyboard */,
 				A5971813239BFCA700435084 /* Assets.xcassets */,
@@ -155,6 +158,7 @@
 				A597180D239BFCA600435084 /* GameScene.swift in Sources */,
 				A597180F239BFCA600435084 /* GameViewController.swift in Sources */,
 				A59AA60A239D711A00E7B2CA /* SnakeBodyPart.swift in Sources */,
+				A5E4802623A013350092C939 /* Border.swift in Sources */,
 				A59AA60E239D72E200E7B2CA /* Snake.swift in Sources */,
 				A5971807239BFCA600435084 /* AppDelegate.swift in Sources */,
 			);

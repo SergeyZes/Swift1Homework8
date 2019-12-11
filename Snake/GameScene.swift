@@ -23,7 +23,7 @@ class GameScene: SKScene {
         self.physicsWorld.gravity = CGVector(dx: 0, dy: 0)
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
         self.physicsBody?.allowsRotation = false
-        view.showsPhysics = true
+        //view.showsPhysics = true
         self.physicsWorld.contactDelegate = self
         
         let counterClockwiseButton = SKShapeNode()
@@ -46,9 +46,23 @@ class GameScene: SKScene {
 
         createApple()
         
+        print("\(counterClockwiseButton.position.x)  \(counterClockwiseButton.position.y)")
+        
         snake = Snake(atPoint: CGPoint(x: view.scene!.frame.midX, y: view.scene!.frame.midY))
         self.addChild(snake!)
         
+        let downEdge = Border(position: CGPoint(x: 0, y: 100), size: CGSize(width: view.scene!.frame.width, height: 5))
+        self.addChild(downEdge)
+        let topEdge = Border(position: CGPoint(x: 0, y: view.scene!.frame.maxY-40), size: CGSize(width: view.scene!.frame.width, height: 5))
+        self.addChild(topEdge)
+        
+        let leftEdge = Border(position: CGPoint(x: 0, y: 100), size: CGSize(width: 5, height: view.scene!.frame.maxY-140))
+        self.addChild(leftEdge)
+        
+        let rightEdge = Border(position: CGPoint(x: view.scene!.frame.width-5, y: 100), size: CGSize(width: 5, height: view.scene!.frame.maxY-140))
+        self.addChild(rightEdge)
+
+
         self.physicsBody?.categoryBitMask = CollisionCategories.EdgeBody
         self.physicsBody?.collisionBitMask = CollisionCategories.Snake | CollisionCategories.SnakeHead
    }
@@ -104,8 +118,8 @@ class GameScene: SKScene {
     }
     
     func createApple() {
-        let randX = CGFloat(arc4random_uniform(UInt32(view!.scene!.frame.maxX - 5)) + 1)
-        let randY = CGFloat(arc4random_uniform(UInt32(view!.scene!.frame.maxY - 5)) + 1)
+        let randX = CGFloat(arc4random_uniform(UInt32(view!.scene!.frame.maxX - 40)) + 20)
+        let randY = CGFloat(arc4random_uniform(UInt32(view!.scene!.frame.maxY - 260)) + 110)
         
         let apple = Apple(position: CGPoint(x: randX, y: randY))
         self.addChild(apple)
@@ -123,6 +137,23 @@ extension GameScene: SKPhysicsContactDelegate {
             snake?.addBodyPart()
             apple?.removeFromParent()
             createApple()
+        case CollisionCategories.EdgeBody:
+            let sprite = SKLabelNode(fontNamed: "Chalkduster")
+            sprite.text = "You Lose"
+            sprite.fontSize = 65
+            sprite.fontColor = .brown
+            sprite.position = CGPoint(x: frame.midX, y: frame.midY)
+            addChild(sprite)
+            
+            let delayAction = SKAction.wait(forDuration: 3)
+            let changeSceneAction = SKAction.run {[weak self] in
+                let scene = GameScene(size: self!.view!.bounds.size)
+                let transition = SKTransition.moveIn(with: .up, duration: 1)
+                self?.view!.presentScene(scene, transition: transition)
+            }
+            let sequenceAction = SKAction.sequence([delayAction,changeSceneAction])
+            run(sequenceAction)
+            
         default:
             break
         }
