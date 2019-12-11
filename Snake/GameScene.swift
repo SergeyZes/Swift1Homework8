@@ -118,8 +118,8 @@ class GameScene: SKScene {
     }
     
     func createApple() {
-        let randX = CGFloat(arc4random_uniform(UInt32(view!.scene!.frame.maxX - 5)) + 1)
-        let randY = CGFloat(arc4random_uniform(UInt32(view!.scene!.frame.maxY - 5)) + 1)
+        let randX = CGFloat(arc4random_uniform(UInt32(view!.scene!.frame.maxX - 40)) + 20)
+        let randY = CGFloat(arc4random_uniform(UInt32(view!.scene!.frame.maxY - 260)) + 110)
         
         let apple = Apple(position: CGPoint(x: randX, y: randY))
         self.addChild(apple)
@@ -137,6 +137,23 @@ extension GameScene: SKPhysicsContactDelegate {
             snake?.addBodyPart()
             apple?.removeFromParent()
             createApple()
+        case CollisionCategories.EdgeBody:
+            let sprite = SKLabelNode(fontNamed: "Chalkduster")
+            sprite.text = "You Lose"
+            sprite.fontSize = 65
+            sprite.fontColor = .brown
+            sprite.position = CGPoint(x: frame.midX, y: frame.midY)
+            addChild(sprite)
+            
+            let delayAction = SKAction.wait(forDuration: 3)
+            let changeSceneAction = SKAction.run {[weak self] in
+                let scene = GameScene(size: self!.view!.bounds.size)
+                let transition = SKTransition.moveIn(with: .up, duration: 1)
+                self?.view!.presentScene(scene, transition: transition)
+            }
+            let sequenceAction = SKAction.sequence([delayAction,changeSceneAction])
+            run(sequenceAction)
+            
         default:
             break
         }
